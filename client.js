@@ -1,5 +1,5 @@
 const config = {
-  clientId: "marketplace",
+  clientId: "pkce-client",
   clientSecret: "123",
   authorizeUrl: "http://localhost:8081/oauth/authorize",
   tokenUrl: "http://localhost:8081/oauth/token",
@@ -19,11 +19,11 @@ function generateCodeVerifier() {
 function generateRandomString(length) {
   let text = "";
   let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  
+
   for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
-  
+
   return text;
 }
 
@@ -63,7 +63,7 @@ function consultar() {
 
 function gerarAccessToken(code) {
   alert("Gerando access token com code " + code);
-  
+
   let clientAuth = btoa(config.clientId + ":" + config.clientSecret);
   let codeVerifier = getCodeVerifier();
 
