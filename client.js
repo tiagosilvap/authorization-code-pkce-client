@@ -1,11 +1,11 @@
 const config = {
   clientId: "pkce-client",
-  clientSecret: "123",
   authorizeUrl: "http://localhost:8081/oauth/authorize",
   tokenUrl: "http://localhost:8081/oauth/token",
   callbackUrl: "http://localhost:63341/authorization-code-pkce-client/index.html",
   cozinhasUrl: "http://localhost:8080/products"
 };
+
 
 let accessToken = "";
 
@@ -19,11 +19,11 @@ function generateCodeVerifier() {
 function generateRandomString(length) {
   let text = "";
   let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
+  
   for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
-
+  
   return text;
 }
 
@@ -63,15 +63,14 @@ function consultar() {
 
 function gerarAccessToken(code) {
   alert("Gerando access token com code " + code);
-
-  let clientAuth = btoa(config.clientId + ":" + config.clientSecret);
+ 
   let codeVerifier = getCodeVerifier();
 
   let params = new URLSearchParams();
   params.append("grant_type", "authorization_code");
   params.append("code", code);
   params.append("redirect_uri", config.callbackUrl);
-  // params.append("client_id", config.clientId);
+  params.append("client_id", config.clientId);
   params.append("code_verifier", codeVerifier);
 
   $.ajax({
@@ -79,10 +78,6 @@ function gerarAccessToken(code) {
     type: "post",
     data: params.toString(),
     contentType: "application/x-www-form-urlencoded",
-
-    beforeSend: function(request) {
-        request.setRequestHeader("Authorization", "Basic " + clientAuth);
-    },
 
     success: function(response) {
       accessToken = response.access_token;
