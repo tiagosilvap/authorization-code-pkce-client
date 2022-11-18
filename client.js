@@ -3,7 +3,7 @@ const config = {
   authorizeUrl: "http://localhost:8081/oauth/authorize",
   tokenUrl: "http://localhost:8081/oauth/token",
   callbackUrl: "http://localhost:63341/authorization-code-pkce-client/index.html",
-  cozinhasUrl: "http://localhost:8080/products"
+  cozinhasUrl: "http://localhost:8080/v1/products"
 };
 
 
@@ -19,11 +19,11 @@ function generateCodeVerifier() {
 function generateRandomString(length) {
   let text = "";
   let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  
+
   for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
-  
+
   return text;
 }
 
@@ -55,15 +55,15 @@ function consultar() {
       $("#resultado").text(json);
     },
 
-    error: function(error) {
-      alert("Erro ao consultar recurso");
+    error: function(xhr, ajaxOptions, thrownError) {
+      alert(xhr.status);
+      alert(thrownError);
     }
   });
 }
 
 function gerarAccessToken(code) {
   alert("Gerando access token com code " + code);
- 
   let codeVerifier = getCodeVerifier();
 
   let params = new URLSearchParams();
